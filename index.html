@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Conversor de Presión</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #f9f9f9;
+      padding: 2em;
+      display: flex;
+      justify-content: center;
+    }
+    .container {
+      background: white;
+      padding: 2em;
+      border-radius: 12px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1em;
+    }
+    label, select, input {
+      display: block;
+      width: 100%;
+      margin-bottom: 1em;
+    }
+    button {
+      width: 100%;
+      padding: 0.7em;
+      background: #0073aa;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    #resultado {
+      margin-top: 1em;
+      font-weight: bold;
+      text-align: center;
+      font-size: 1.1em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Conversor de Presión</h2>
+    <label for="valor">Valor:</label>
+    <input type="number" id="valor" placeholder="Ej: 1">
+
+    <label for="desde">Desde:</label>
+    <select id="desde">
+      <option value="atm">Atmósferas (atm)</option>
+      <option value="bar">Bar</option>
+      <option value="pa">Pascales (Pa)</option>
+      <option value="mmhg">Milímetros de mercurio (mmHg)</option>
+    </select>
+
+    <label for="hacia">Hacia:</label>
+    <select id="hacia">
+      <option value="atm">Atmósferas (atm)</option>
+      <option value="bar">Bar</option>
+      <option value="pa">Pascales (Pa)</option>
+      <option value="mmhg">Milímetros de mercurio (mmHg)</option>
+    </select>
+
+    <button onclick="convertir()">Convertir</button>
+
+    <div id="resultado"></div>
+  </div>
+
+  <script>
+    function convertir() {
+      const valor = parseFloat(document.getElementById("valor").value);
+      const desde = document.getElementById("desde").value;
+      const hacia = document.getElementById("hacia").value;
+
+      if (isNaN(valor)) {
+        document.getElementById("resultado").innerText = "Ingrese un número válido.";
+        return;
+      }
+
+      // Factores de conversión a Pascal (Pa) como base
+      const aPa = {
+        atm: 101325,
+        bar: 100000,
+        pa: 1,
+        mmhg: 133.322
+      };
+
+      // Convertir desde unidad base a Pascal
+      const valorEnPa = valor * aPa[desde];
+
+      // Convertir desde Pascal a unidad destino
+      const resultado = valorEnPa / aPa[hacia];
+
+      document.getElementById("resultado").innerText = 
+        valor + " " + desde + " = " + resultado.toFixed(5) + " " + hacia;
+    }
+  </script>
+</body>
+</html>
